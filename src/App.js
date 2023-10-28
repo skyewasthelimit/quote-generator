@@ -1,5 +1,6 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
+import Twitter from './assets/twitter.png'
 
 const RandomQuote = () => {
   const [quote, setQuote] = useState('');
@@ -46,7 +47,7 @@ const RandomQuote = () => {
         <button id="new-quote" onClick={handleNewQuoteClick}>
             New Quote
           </button>
-          <button id="tweet" onClick={handleTweetClick}>Share on Twitter</button>
+          <button id="tweet"><img id="twitter" src={Twitter} onClick={handleTweetClick}></img></button>
       </div>
     </div>
   );

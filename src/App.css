@@ -71,3 +71,9 @@
 #tweet:active {
   background-color: #362d3a;
 }
+
+#twitter {
+  height: 10vh;
+  padding: auto;
+  margin: auto;
+}
