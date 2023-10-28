@@ -47,7 +47,7 @@ const RandomQuote = () => {
         <button id="new-quote" onClick={handleNewQuoteClick}>
             New Quote
           </button>
-          <button id="tweet"><img id="twitter" src={Twitter} onClick={handleTweetClick}></img></button>
+          <button id="tweet"><img id="twitter" src={Twitter} alt="Tweet" onClick={handleTweetClick}></img></button>
       </div>
     </div>
   );
