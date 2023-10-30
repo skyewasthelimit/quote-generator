@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useState, useEffect, useCallback } from 'react';
 import Twitter from './assets/twitter.png'
+import pageflip from "./assets/pageflip.mp3";
 
 const COLORS = [
   '#16a085',
@@ -17,11 +18,23 @@ const COLORS = [
   '#73A857'
 ];
 
+const fontOptions = [
+  'Impact',
+  'Times-New-Roman',
+  'Arial',
+  'Courier New',
+  'Monospace',
+  'Cursive',
+  'Trebuchet MS',
+  'Serif'
+];
+
 const RandomQuote = () => {
   const [quote, setQuote] = useState('');
   const [author, setAuthor] = useState('');
   const [currentColor, setCurrentColor] = useState('#BDBB99');
   const [previousColor, setPreviousColor] = useState('#BDBB99');
+  const [selectedFont, setSelectedFont] = useState('');
 
 
   const fetchRandomQuote = async () => {
@@ -38,6 +51,10 @@ const RandomQuote = () => {
     }
   };
 
+  const pageFlipSound = () => {
+    new Audio(pageflip).play();
+  };
+
   useEffect(() => {
     fetchRandomQuote();
   }, []);
@@ -45,6 +62,7 @@ const RandomQuote = () => {
   const handleNewQuoteClick = () => {
     fetchRandomQuote();
     changeColor();
+    pageFlipSound();
   };
 
   const changeColor = useCallback(() => {
@@ -53,13 +71,16 @@ const RandomQuote = () => {
     setCurrentColor(color);
   }, [currentColor, setPreviousColor, setCurrentColor])
 
+  const handleFontChange = (event) => {
+    const font = event.target.value;
+    setSelectedFont(font);
+  };
 
   useEffect(() => {
     if (currentColor === previousColor) {
       changeColor();
     }
   }, [currentColor, previousColor, changeColor]);
-
 
   const handleTweetClick = () => {
     const tweetText = `"${quote}" - ${author}`;
@@ -73,16 +94,32 @@ const RandomQuote = () => {
     
     <div className="App">
       <div id="header" style={{backgroundColor:currentColor}}>
+      <p id="font-text">Quote Generator</p>
         <div id="quote-box">
-          <div id="text" style={{color:currentColor}}>"{quote}"</div>
+          <div id="text" style={{color:currentColor, fontFamily:selectedFont}}>"{quote}"</div>
           <div id="author" style={{color:currentColor}}>-{author}</div>
         </div>
         <button id="new-quote" style={{backgroundColor:currentColor}} onClick={handleNewQuoteClick}>
             New Quote
           </button>
-          <button id="tweet-quote"><img id="twitter" src={Twitter} onClick={handleTweetClick} alt="twitter bird"></img></button>
-      </div>
+          <p id="font-text">FONT:</p>
+          <div>
+      <label htmlFor="fontDropdown"></label>
+      <select
+        id="fontDropdown"
+        value={selectedFont}
+        onChange={handleFontChange}
+      >
+        {fontOptions.map((font, index) => (
+          <option key={index} value={font}>
+            {font}
+          </option>
+        ))}
+      </select>
     </div>
+    <button id="tweet-quote"><img id="twitter" src={Twitter} onClick={handleTweetClick} alt="twitter bird"></img></button>
+       </div>
+      </div>
   );
 };
 
