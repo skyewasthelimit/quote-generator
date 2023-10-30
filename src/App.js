@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Twitter from './assets/twitter.png'
 
 const COLORS = [
@@ -21,7 +21,7 @@ const RandomQuote = () => {
   const [quote, setQuote] = useState('');
   const [author, setAuthor] = useState('');
   const [currentColor, setCurrentColor] = useState('#BDBB99');
-  const [previousColor, setPreviousColor] = useState('');
+  const [previousColor, setPreviousColor] = useState('#BDBB99');
 
 
   const fetchRandomQuote = async () => {
@@ -47,17 +47,18 @@ const RandomQuote = () => {
     changeColor();
   };
 
+  const changeColor = useCallback(() => {
+    setPreviousColor(currentColor);
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)]
+    setCurrentColor(color);
+  }, [currentColor, setPreviousColor, setCurrentColor])
+
+
   useEffect(() => {
     if (currentColor === previousColor) {
       changeColor();
     }
-  }, [currentColor]);
-
-  const changeColor = () => {
-    setPreviousColor(currentColor);
-    const color = COLORS[Math.floor(Math.random() * COLORS.length)]
-    setCurrentColor(color);
-  } 
+  }, [currentColor, previousColor, changeColor]);
 
 
   const handleTweetClick = () => {
@@ -79,7 +80,7 @@ const RandomQuote = () => {
         <button id="new-quote" style={{backgroundColor:currentColor}} onClick={handleNewQuoteClick}>
             New Quote
           </button>
-          <button id="tweet-quote"><img id="twitter" src={Twitter} onClick={handleTweetClick}></img></button>
+          <button id="tweet-quote"><img id="twitter" src={Twitter} onClick={handleTweetClick} alt="twitter bird"></img></button>
       </div>
     </div>
   );
