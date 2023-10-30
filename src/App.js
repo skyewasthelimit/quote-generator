@@ -2,9 +2,27 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import Twitter from './assets/twitter.png'
 
+const COLORS = [
+  '#16a085',
+  '#27ae60',
+  '#2c3e50',
+  '#f39c12',
+  '#e74c3c',
+  '#9b59b6',
+  '#FB6964',
+  '#342224',
+  '#472E32',
+  '#BDBB99',
+  '#77B1A9',
+  '#73A857'
+];
+
 const RandomQuote = () => {
   const [quote, setQuote] = useState('');
   const [author, setAuthor] = useState('');
+  const [currentColor, setCurrentColor] = useState('#BDBB99');
+  const [previousColor, setPreviousColor] = useState('');
+
 
   const fetchRandomQuote = async () => {
     try {
@@ -26,7 +44,22 @@ const RandomQuote = () => {
 
   const handleNewQuoteClick = () => {
     fetchRandomQuote();
+    changeColor();
   };
+
+  useEffect(() => {
+    if (currentColor === previousColor) {
+      changeColor();
+    }
+  }, [currentColor]);
+
+
+  const changeColor = () => {
+    setPreviousColor(currentColor);
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)]
+    setCurrentColor(color);
+  } 
+
 
   const handleTweetClick = () => {
     const tweetText = `"${quote}" - ${author}`;
@@ -39,15 +72,15 @@ const RandomQuote = () => {
   return (
     
     <div className="App">
-      <div id="header">
+      <div id="header" style={{backgroundColor:currentColor}}>
         <div id="quote-box">
-          <div id="text">"{quote}"</div>
-          <div id="author">-{author}</div>
+          <div id="text" style={{color:currentColor}}>"{quote}"</div>
+          <div id="author" style={{color:currentColor}}>-{author}</div>
         </div>
-        <button id="new-quote" onClick={handleNewQuoteClick}>
+        <button id="new-quote" style={{backgroundColor:currentColor}} onClick={handleNewQuoteClick}>
             New Quote
           </button>
-          <button id="tweet"><img id="twitter" src={Twitter} onClick={handleTweetClick}></img></button>
+          <button id="tweet-quote"><img id="twitter" src={Twitter} onClick={handleTweetClick}></img></button>
       </div>
     </div>
   );
