@@ -21,7 +21,6 @@ const RandomQuote = () => {
   const [quote, setQuote] = useState('');
   const [author, setAuthor] = useState('');
   const [currentColor, setCurrentColor] = useState('#BDBB99');
-  const [previousColor, setPreviousColor] = useState('');
 
 
   const fetchRandomQuote = async () => {
@@ -47,19 +46,11 @@ const RandomQuote = () => {
     changeColor();
   };
 
-  useEffect(() => {
-    if (currentColor === previousColor) {
-      changeColor();
-    }
-  }, [currentColor]);
-
-
   const changeColor = () => {
     setPreviousColor(currentColor);
     const color = COLORS[Math.floor(Math.random() * COLORS.length)]
     setCurrentColor(color);
-  } 
-
+  }  
 
   const handleTweetClick = () => {
     const tweetText = `"${quote}" - ${author}`;
